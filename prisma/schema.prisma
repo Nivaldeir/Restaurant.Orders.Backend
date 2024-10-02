@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Table {
+  id     String  @id @default(uuid()) @db.Uuid
+  name   String  @db.VarChar(100)
+  status String
+  Order  Order[]
+}
+
+model Category {
+  id       String    @id @default(uuid()) @db.Uuid
+  name     String    @db.VarChar(100)
+  products Product[]
+}
+
+model Ingredient {
+  id            String       @id @default(uuid()) @db.Uuid
+  name          String       @db.VarChar(100)
+  price         Float
+  SaleProduct   SaleProduct? @relation(fields: [saleProductId], references: [id])
+  saleProductId String?      @db.Uuid
+  Product       Product?     @relation(fields: [productId], references: [id])
+  productId     String?      @db.Uuid
+}
+
+model Product {
+  id          String        @id @default(uuid()) @db.Uuid
+  name        String        @db.VarChar(100)
+  price       Float         @db.DoublePrecision
+  ingredient  Ingredient[]
+  categorie   Category      @relation(fields: [categorieId], references: [id], onDelete: Cascade)
+  categorieId String        @db.Uuid
+  saleProduct SaleProduct[]
+}
+
+model SaleProduct {
+  id        String       @id @default(uuid()) @db.Uuid
+  product   Product      @relation(fields: [productId], references: [id])
+  increment Ingredient[]
+  quantity  Int
+  productId String       @db.Uuid
+  order     Order?       @relation(fields: [orderId], references: [id])
+  orderId   String?      @db.Uuid
+}
+
+model Order {
+  id             String        @id @default(uuid()) @db.Uuid
+  tableId        String        @db.Uuid
+  startTimestamp DateTime
+  endTimestamp   DateTime?
+  price          Float         @db.DoublePrecision
+  status         String
+  table          Table         @relation(fields: [tableId], references: [id])
+  products       SaleProduct[]
+  payment        Payment?      @relation(fields: [paymentId], references: [id])
+  paymentId      String?       @db.Uuid
+}
+
+model Payment {
+  id      String  @id @default(uuid()) @db.Uuid
+  orderId String  @db.Uuid
+  method  String
+  amount  Float
+  order   Order[]
+}

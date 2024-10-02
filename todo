@@ -1,0 +1,16 @@
+Princípios SOLID:
+    ✔ Quais são os princípios @done
+    ✔ O que é cada um @done
+
+Projeto Prático - API de Gestao de reustaurante:
+    ✔ Criação da entidade @done
+    ✔ Criação do repositórios @done
+        ✔ Criação do contrato @done
+        ✔ Instalação e configuração do prisma + postgress @done
+        ✔ Criação do repositório de produtos @done
+    ✔ Criação do serviços @done
+        ✔ Criação do contrato @done
+        ✔ Implementação concreta @done
+    ✔ Criação do repositorios do banco de dados
+    ✔ Criação do controllers @done
+    Atualizacao
